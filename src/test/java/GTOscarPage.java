@@ -1,10 +1,14 @@
 import org.junit.Assert;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
 public class GTOscarPage extends BasePage{
+
+    private Logger log = LoggerFactory.getLogger(GTOscarPage.class);
 
     private final String BASE_PAGE_URL = "https://oscar.gatech.edu/";
     private final String SCED_OF_CLASSES_PAGE_URL = BASE_PAGE_URL + "pls/bprod/bwckschd.p_disp_dyn_sched";
@@ -14,9 +18,7 @@ public class GTOscarPage extends BasePage{
     private By scheduleOfClassesIcon = By.xpath("//a[@title='Georgia Tech schedule of classes']");
     private By selectByTermDropDown = By.name("p_term");
     private By submitButton = By.xpath("//input[@type='submit']");
-    private By classTermSubjectDropdown = By.name("sel_subj");
     private By classTermSubjectDropdownItem = By.xpath("//option[@value='CS']");
-    private By sectionHeadings = By.className("ddtitle");
     private By sectionHeadingsTest = By.xpath("//*[@class='ddtitle']/a");
 
     GTOscarPage(WebDriver driver) {
@@ -60,14 +62,11 @@ public class GTOscarPage extends BasePage{
     public void checkHeadings() {
         List<String> headingsList = getAttributeFromWebElements(collectAllElementsByTag(sectionHeadingsTest), "text");
 
-        //Uncommented to see full list printout.
-//        System.out.println("================================================================");
-//        System.out.println(headingsList);
-//        System.out.println("================================================================");
-
         //If time permitted, pojos could be made to more easily parse and validate
-        for (String str: headingsList)
+        for (String str: headingsList) {
+            log.info("Validating headings for string: " + str + " --> contains \"CS\": " + str.contains("CS"));
             Assert.assertTrue(str.contains("CS"));
+        }
     }
 
 }
